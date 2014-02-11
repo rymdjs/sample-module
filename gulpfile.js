@@ -5,15 +5,22 @@ var watch = 		require("gulp-watch");
 var clean = 		require('gulp-clean');
 var concat = 		require("gulp-concat");
 var spawn = 		require('child_process').spawn;
+var fs = 			require("fs");
+var jshint = 		require('gulp-jshint');
+var jshintStylish = require('jshint-stylish');
 
 // Common build operation:
 // 	Take main.js, add deps, concatenate into
 // 	`bundle.js` and put in build directory.
 function build() {
-	gulp.src('./lib/main.js')
-		.pipe(browserify())
-		.pipe(concat("bundle.js"))
-		.pipe(gulp.dest("./build"));
+	fs.readFile("./package.json", "utf-8", function(config) {
+		var json = JSON.parse(config);
+
+		gulp.src('./lib/main.js')
+			.pipe(browserify())
+			.pipe(concat("bundle.js"))
+			.pipe(gulp.dest("./build"));
+	});
 }
 
 
@@ -29,6 +36,12 @@ gulp.task('test', function () {
     spawn("open", ["test/runner.html"]);
 });
 
+gulp.task('lint', function() {
+	gulp.src('lib/**/*.js')
+		.pipe(jshint("./.jshintrc"))
+		.pipe(jshint.reporter(jshintStylish));
+});
+
 // Watch source files and use Browserify to handle deps.
 gulp.task('watch', function() {
 	gulp.src("lib/**/*.js").pipe(watch(function(files) {
@@ -36,7 +49,7 @@ gulp.task('watch', function() {
 	}));
 });
 
-gulp.task('build', ['clean'], function() {
+gulp.task('build', ['clean', 'lint'], function() {
     build();
 });
 
