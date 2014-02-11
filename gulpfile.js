@@ -13,13 +13,15 @@ var jshintStylish = require('jshint-stylish');
 // 	Take main.js, add deps, concatenate into
 // 	`bundle.js` and put in build directory.
 function build() {
-	fs.readFile("./package.json", "utf-8", function(config) {
+	fs.readFile("package.json", "utf-8", function(err, config) {
 		var json = JSON.parse(config);
 
-		gulp.src('./lib/main.js')
+		gulp.src(json.main)
 			.pipe(browserify())
 			.pipe(concat("bundle.js"))
 			.pipe(gulp.dest("./build"));
+
+		console.log("Built "+json.main);
 	});
 }
 
