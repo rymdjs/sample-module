@@ -19,6 +19,7 @@
     "gulp-clean": "~0.2.4",
     "gulp-concat": "~2.1.7",
     "gulp-jshint": "~1.4.0",
-    "jshint-stylish": "~0.1.5"
+    "jshint-stylish": "~0.1.5",
+    "connect": "~2.13.0"
   }
 }
