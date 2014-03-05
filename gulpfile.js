@@ -9,6 +9,7 @@ var spawn = 		require('child_process').spawn;
 var fs = 			require("fs");
 var jshint = 		require('gulp-jshint');
 var jshintStylish = require('jshint-stylish');
+var notify = 		require("gulp-notify");
 
 // Common build operation:
 // 	Take main.js, add deps, concatenate into
@@ -19,6 +20,7 @@ function build() {
 
 		gulp.src(json.main)
 			.pipe(browserify())
+			.on('error', notify.onError("<%= error.message%>"))
 			.pipe(concat("bundle.js"))
 			.pipe(gulp.dest("./build"));
 
@@ -37,12 +39,12 @@ gulp.task('test', function () {
 		port = 3000;
 
 	// Use browser based testing and not a headless WebKit
-	// proxy, since PhantomJS doesn't support IndexedDB as 
+	// proxy, since PhantomJS doesn't support IndexedDB as
 	// of 1.9.x.
     connect.createServer(
     	connect.static(__dirname)
     ).listen(port);
-    
+
     gutil.log("Test server listening on localhost:"+port+" ...");
     gutil.log("Press Ctrl+C to quit");
     spawn("open", ["http://localhost:"+port+"/test/"+runner]);
