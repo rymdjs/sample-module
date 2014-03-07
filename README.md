@@ -3,20 +3,23 @@
 A sample Javascript module with folder structure, tests, and more.
 
 ## Build tasks
-	
-	# Default: builds bundle.js from lib/main.js
+
+	# Default: builds bundle.js from lib/index.js
 	gulp
 	gulp build
-	
+
 	# Watches lib/main.js for changes and generates a build
 	gulp watch
+
+	# Run JSHint
+	gulp lint
 
 	# Removes `build`
 	gulp clean
 
 ## Develop
 
-	npm install 
+	npm install
 	gulp watch
 
 A concatenated `bundle.js` will be generated in the `build` directory.
